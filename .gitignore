@@ -1,0 +1,15 @@
+# .gitignore for ROS 2 workspace
+
+# ROS 2 build and logs
+/build/
+/install/
+/log/
+
+# Python specific
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Virtual environments
+.venv/
