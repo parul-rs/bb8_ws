@@ -18,7 +18,7 @@
             <visual>
               <origin rpy="0 0 3.14" xyz="0 0.0 -${sphere_radius}" />
               <geometry>
-                <mesh filename="package://bb_8_description/meshes/bb8/head_bb8/head.dae" scale="1 1 1"/>
+                <mesh filename="package://bb8/src/meshes/head.dae" scale="1 1 1"/>
               </geometry>
             </visual>
         </link>

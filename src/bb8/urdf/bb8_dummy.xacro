@@ -30,7 +30,7 @@
             <visual>
               <origin rpy="0 0 0" xyz="0 0.0 ${-1*r}" />
               <geometry>
-                <mesh filename="package://bb_8_description/meshes/bb8/ball_bb8/ball.dae" scale="1 1 1"/>
+                <mesh filename="package://bb8/src/meshes/ball.dae" scale="1 1 1"/>
               </geometry>
             </visual>
           </link>
