@@ -1,6 +1,7 @@
 import casadi as cas
 import rospy
 import time
+import numpy as np
 
 from test_init import cas_command 
 from test_command import BB8Tests
@@ -8,7 +9,9 @@ from test_command import BB8Tests
 # Optimization
 
 N = 100  #number of control intervals
-alpha_list = [0]*(N-1)
+n = int(N/2)
+C = np.linspace(0, np.pi/2, n)
+alpha_list = np.append(C, -C[::-1])
 
 cmd = cas_command(N, alpha_list)
 cmd.opti.subject_to(cmd.X_1[0,cmd.N-1]==6.28318) # Final angular position

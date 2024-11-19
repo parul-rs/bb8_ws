@@ -3,12 +3,12 @@ import numpy as np
 
 class cas_command:
 
-    def __init__(self, N, alpha):
+    def __init__(self, N, alpha_list):
         # For reference, from journal paper: 'The total diameter of the robot is 18 centimetres'. This does not seem to match the dimensions in the thesis.
         # NOTE: NEED TO UPDATE VALUES ON XACRO FILE TO MATCH THESIS VALUES!!
 
         self.N = N
-        self.alpha = alpha
+        self.alpha_list = alpha_list
 
         # ---------------------------------------------------------
         # Spherical robot's properties from master's thesis
@@ -75,6 +75,7 @@ class cas_command:
         self.v_1 = cas.SX.sym("v_1") # angular velocity of angle 1
         self.v_2 = cas.SX.sym("v_2") # angular velocity of angle 2
         self.Trq = cas.SX.sym("Trq") # Torque of rolling motor
+        self.alpha = cas.SX.sym("alpha") # Robot angle with floor
 
         # Trq = a1 * (J2 - (M2 * r * np.cos(theta_1 + theta_2)) + (M2 * e**2)) + a2 * (J2 + (M2 * e**2)) + (M2 * 9.81 * e * np.sin(theta_1 + theta_2 + alpha))
 
@@ -108,7 +109,7 @@ class cas_command:
         self.opti.subject_to(self.T>=0) # Time must be positive
             
         self.ode_function_1 = cas.Function('ode_function', [self.x_1, self.tau_m], [self.ode_1])
-        self.ode_function_2 = cas.Function('ode_function', [self.x_2, self.Trq, self.a_2], [self.ode_2])
+        self.ode_function_2 = cas.Function('ode_function', [self.x_2, self.Trq, self.alpha, self.a_2], [self.ode_2])
 
         dt = self.T/self.N
         for i in range(N-1):
@@ -116,7 +117,7 @@ class cas_command:
             x_1_dot_i = self.ode_function_1(self.X_1[:,i], self.TAU[i])
             x_1_next = self.X_1[:,i] + dt * x_1_dot_i
             self.opti.subject_to(self.X_1[:,i+1]==x_1_next) #close the integration gaps for x_1
-            x_2_dot_i = self.ode_function_2(self.X_2[:,i], self.TRQ[i], self.A_2[i])
+            x_2_dot_i = self.ode_function_2(self.X_2[:,i], self.TRQ[i], self.alpha_list[i], self.A_2[i])
             x_2_next = self.X_2[:,i] + dt * x_2_dot_i
             self.opti.subject_to(self.X_2[:,i+1]==x_2_next) #close the integration gaps for x_1
         
