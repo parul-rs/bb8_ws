@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-
     <xacro:macro  name="bb_8_head" params="parent">
 
         <link name="head_link">
             <inertial>
               <origin rpy="0 0 0" xyz="0.0 0.0 0.0" />
               <mass value="${head_mass}" />
-              <sphere_inertia mass="${head_mass}" r="${head_radius}" />
+              <sphere_inertia mass="${head_mass}" r="${head_radius}"/>
             </inertial>
             <collision>
               <origin rpy="0 0 0" xyz="0 0 ${sphere_radius}" />

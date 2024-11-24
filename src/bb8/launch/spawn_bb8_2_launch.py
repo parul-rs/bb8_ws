@@ -1,73 +1,58 @@
+import launch
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, ExecuteProcess
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
-from launch.substitutions import Command, LaunchConfiguration
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.actions import ExecuteProcess, DeclareLaunchArgument, SetLaunchConfiguration
 from launch_ros.actions import Node
-import os
 from ament_index_python.packages import get_package_share_directory
+from launch.substitutions import LaunchConfiguration
+import os
 import xacro
 
 def generate_launch_description():
-    # Define the path to the Xacro file
+    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+
+    # Define the path to the xacro file
     xacro_file = os.path.join(
         get_package_share_directory('bb8'),
-        'urdf2',
-        'bb8.gazebo.xacro'
+        'urdf2/bb8.gazebo.xacro'
     )
+    robot_description_raw = xacro.process_file(xacro_file).toxml()
+    
+    # world_file = os.path.join(
+    #     get_package_share_directory('bb8'),
+    #     'worlds', 'empty.world'
+    # )
+    robot_description_raw = xacro.process_file(xacro_file).toxml()
 
-    # Command to convert the Xacro file to URDF
-    doc = xacro.process_file(xacro_file)
-    robot_description_config = doc.toxml()
-    #robot_description_content = Command(['xacro', xacro_file])
-    #robot_description = {'robot_description': robot_description_content}
-    # Include the Gazebo ROS launch file (this ensures Gazebo is launched with the necessary plugins)
-    gazebo_launch_file = os.path.join(
-        get_package_share_directory('gazebo_ros'),
-        'launch',
-        'gazebo.launch.py'
+    # Include Gazebo launch file
+    gazebo_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')
+        ]),
+        #launch_arguments={'world': world_file}.items()
     )
 
     return LaunchDescription([
-        # Use Gazebo simulation time
-        DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='true',
-            description='Use simulation (Gazebo) clock if true'
-        ),
-
-        # Publish the robot state
-        Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            output='screen',
-            parameters=[{
-                'use_sim_time': LaunchConfiguration('use_sim_time'),
-                'robot_description': robot_description_config,
-            }]
-        ),
-
-        # Spawn the robot in Gazebo using /spawn_entity
+        #gazebo_launch,
+        # To launch, run ros2 launch gazebo_ros gazebo.launch.py
+        # Make sure you have sourced:  source /usr/share/gazebo/setup.sh
+        # Then run this launchfile
         Node(
             package='gazebo_ros',
             executable='spawn_entity.py',
-            arguments=[
-                '-entity', 'bb_8',
-                '-topic', 'robot_description',
-                '-x', '0', '-y', '0', '-z', '0.1'
-            ],
-            output='screen'
+            arguments=['-topic', '/robot_description', '-entity', 'bb8'],
+            output='screen',
         ),
-
-        # # Launch Gazebo
-        # ExecuteProcess(
-        #     cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_factory.so'],
-        #     output='screen'
-        # Launch Gazebo with ROS 2 integration
-        # ExecuteProcess(
-        #     cmd=['gazebo', '--verbose', '--ros', '2', '--sdf'],
-        #     output='screen'
-        IncludeLaunchDescription(
-            gazebo_launch_file,
-            launch_arguments={'use_sim_time': LaunchConfiguration('use_sim_time')}.items()
-        ),
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='false',
+            description='Use simulation (Gazebo) clock if true'),
+        Node(
+            package='robot_state_publisher',
+            executable='robot_state_publisher',
+            name='robot_state_publisher',
+            output='screen',
+            parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_description_raw}],
+            arguments=[xacro_file]),
     ])

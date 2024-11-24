@@ -11,6 +11,13 @@
     <fdir1>1 0 0</fdir1>
     <maxVel>10.0</maxVel>
     <minDepth>0.0005</minDepth>
+    <visual>
+      <geometry>
+        <!-- Assuming you have a geometry set for the base_link, such as a cylinder -->
+        <cylinder radius="0.2" length="0.5"/>
+      </geometry>
+      <material>Gazebo/Orange</material>
+    </visual>
   </gazebo>
 
   <gazebo reference="base_rotation_link">
@@ -63,6 +70,20 @@
     <fdir1>1 0 0</fdir1>
     <maxVel>1.0</maxVel>
     <minDepth>0.003</minDepth>
+    <visual>
+      <geometry>
+        <mesh>
+          <uri>model://bb8/meshes/head_bb8.dae"</uri>
+        </mesh>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh>
+          <uri>model://bb8/meshes/head_bb8.dae"</uri>
+        </mesh>
+      </geometry>
+    </collision>
   </gazebo>
 
   <!-- gazebo reference="wheel_joint">
