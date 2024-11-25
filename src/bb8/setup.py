@@ -27,7 +27,8 @@ setup(
     entry_points={
         'console_scripts': [
             'run_something = bb8.scripts.run_something:main',
-            'spawn_bb8 = bb8.scripts.spawn_bb8:main'
+            'spawn_bb8 = bb8.scripts.spawn_bb8:main',
+            'test_command = bb8.scripts.test_command:main',
         ],
     },
 )

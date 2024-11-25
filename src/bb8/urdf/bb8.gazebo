@@ -9,6 +9,11 @@
     <fdir1>1 0 0</fdir1>
     <maxVel>10.0</maxVel>
     <minDepth>0.0005</minDepth>
+    <visual>
+      <geometry>
+        <mesh filename="package://bb8/src/meshes/ball.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
   </gazebo>
   <gazebo reference="link_left_wheel">
     <material>Gazebo/Blue</material>

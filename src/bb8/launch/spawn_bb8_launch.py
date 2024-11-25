@@ -70,11 +70,11 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        gazebo_launch,
+        #gazebo_launch,
         Node(
             package='gazebo_ros',
             executable='spawn_entity.py',
-            arguments=['-topic', '/robot_description', '-entity', 'bb8'],
+            arguments=['-topic', '/robot_description', '-entity', 'bb8', '-x', '0', '-y', '0', '-z', '1'],
             output='screen',
         ),
         DeclareLaunchArgument(
@@ -88,4 +88,12 @@ def generate_launch_description():
             output='screen',
             parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_description_raw}],
             arguments=[xacro_file]),
+                # Node execution: Run the spawn_bb8 Python script
+        # Node(
+        #     package='bb8',                        # Package name
+        #     executable='test_command',                # Executable name (this is the Python script)
+        #     name='test_command_node',                 # Node name (can be anything)
+        #     output='screen',                       # Print logs to screen
+        #     parameters=[{'use_sim_time': False}],  # Example of passing parameters (optional)
+        # ),
     ])
