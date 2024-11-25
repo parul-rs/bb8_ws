@@ -2,33 +2,15 @@
 
 import rclpy # EDIT : from rospy (ros1)
 from rclpy.node import Node
-# from gazebo_msgs.srv import GetModelState, GetModelStateRequest
-from gazebo_msgs.srv import GetModelState
 from geometry_msgs.msg import Twist
 import time
 
 class BB8Tests(Node):
 
     def __init__(self):
-        # self._model = GetModelStateRequest()
-        # self._model.model_name = 'bb_8'
-        # rospy.wait_for_service('/gazebo/get_model_state')
-        # self._get_model_srv = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
-        # self._pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
-
         super().__init__('test_command_node') # Initialize ROS2 Node 
-        self._model = GetModelState.Request()
-        self._model.model_name = 'bb8'
-
-        # Wait for the service to be available
-        self.get_logger().info("Waiting for '/gazebo/get_model_state' service...")
-        self._get_model_srv = self.create_client(GetModelState, '/gazebo/get_model_state')
-
         # Create publisher to send command veleocities to /cmd_vel topic 
         self.publisher = self.create_publisher(Twist, '/cmd_vel', 10)
-
-        while not self._get_model_srv.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('Service not available, waiting again...')
 
     def clear_commands(self):
         """
@@ -37,12 +19,6 @@ class BB8Tests(Node):
         """
                 
         cmd_vel_msg = Twist()
-        # cmd_vel_msg.linear.x = 0.0
-        # cmd_vel_msg.linear.y = 0.0
-        # cmd_vel_msg.linear.z = 0.0
-        # cmd_vel_msg.angular.x = 0.0
-        # cmd_vel_msg.angular.y = 0.0
-        # cmd_vel_msg.angular.z = 0.0
         self.publisher.publish(cmd_vel_msg)
 
     def test_commands(self, cmd):
@@ -77,7 +53,7 @@ def main(args=None):
         T = 10  # Total time
         N = 100  # Number of commands
         linear_x = [0.1] * 100  # Example linear velocities
-        linear_y = [0.0] * 100
+        linear_y = [0.0] * 100  # Example linear velocities
         linear_z = [0.0] * 100
         angular_x = [0.0] * 100
         angular_y = [0.0] * 100
@@ -92,10 +68,3 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-
-# if __name__ == "__main__":
-#     main()
-
-#     rospy.init_node('bb8_command_test_node', log_level=rospy.DEBUG)
-#     bb8_tests_obj = BB8Tests()
-#     bb8_tests_obj.test_commands()
