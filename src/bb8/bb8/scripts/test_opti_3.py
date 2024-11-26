@@ -1,37 +1,35 @@
-# Continuation of Test 1, introduces alpha (angle with surface) term in solving ODEs
+# Initial test of differential drive
 import casadi as cas
 import rclpy
 import time
 import numpy as np
 
 from bb8.scripts.test_command import BB8Tests
-from bb8.scripts.test_pendulum_init import cas_command 
+from bb8.scripts.test_diffdrive_init import cas_command 
 
 def main(args=None):
     rclpy.init(args=args)
 
     # Optimization
     N = 100  #number of control intervals
-    n = int(N/2)
-    C = np.linspace(0, np.pi/2, n)
-    alpha_list = np.append(C, -C[::-1])
 
-    cmd = cas_command(N, alpha_list)
-    cmd.opti.subject_to(cmd.X_1[0,cmd.N-1]==6.28318) # Final angular position of spinning mode
-    cmd.opti.subject_to(cmd.X_2[0,cmd.N-1]==6.28318) # Final angular position of rolling mode
+    cmd = cas_command(N)
+    cmd.opti.subject_to(cmd.X_1[0,cmd.N-1]==0.1) # Final x position in meters
 
     # Solve using ipop`t solver for nonlinear optimization problem
     cmd.opti.solver('ipopt')
     sol = cmd.opti.solve()
 
     # Get optimal solutions
+    cmd.V_R_solution = sol.value(cmd.V_R)
+    cmd.V_L_solution = sol.value(cmd.V_L)
     cmd.X_1_solution = sol.value(cmd.X_1)
-    cmd.X_2_solution = sol.value(cmd.X_2)
     cmd.T_solution = sol.value(cmd.T)
 
     # Set commands based on optimal solution
-    cmd.linear_x = cmd.X_2_solution[0, :] * cmd.r
-    cmd.angular_z = cmd.X_1_solution[1, :]
+    cmd.linear_x = np.insert(cmd.X_1_solution[0, 0:N-1] - cmd.X_1_solution[0, 1:N], 0, 0)
+    cmd.linear_y = np.insert(cmd.X_1_solution[1, 0:N-1] - cmd.X_1_solution[1, 1:N], 0, 0)
+    cmd.angular_z = np.insert(cmd.X_1_solution[2, 0:N-1] - cmd.X_1_solution[2, 1:N], 0, 0)
 
     # Initialize commands
     bb8_tests_obj = BB8Tests()

@@ -29,9 +29,11 @@ setup(
             'run_something = bb8.scripts.run_something:main',
             'spawn_bb8 = bb8.scripts.spawn_bb8:main',
             'test_command = bb8.scripts.test_command:main',
-            'test_opti_1 = bb8.scripts.test_opti_1:main',
             'test_pendulum_init = bb8.scripts.test_pendulum_init:main',
+            'test_diffdrive_init = bb8.scripts.test_diffdrive_init:main',
+            'test_opti_1 = bb8.scripts.test_opti_1:main',
             'test_opti_2 = bb8.scripts.test_opti_2:main',
+            'test_opti_3 = bb8.scripts.test_opti_3:main',
         ],
     },
 )
