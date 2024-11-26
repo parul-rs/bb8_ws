@@ -19,14 +19,14 @@ def main(args=None):
     # X_1[2] = rotation angle
     
     # Instructing BB8 to go to edge of circle first
-    cmd.opti.subject_to(cmd.X_1[0,5]== 5 )
-    cmd.opti.subject_to(cmd.X_1[1,5]== 0 )
-    cmd.opti.subject_to(cmd.X_1[2,5]== 0 )
+    cmd.opti.subject_to(cmd.X_1[0,4]== 5 )
+    cmd.opti.subject_to(cmd.X_1[1,4]== 0 )
+    cmd.opti.subject_to(cmd.X_1[2,4]== 0 )
 
     for n in range(0,N-5):
-        cmd.opti.subject_to(cmd.X_1[0,n]== 5*np.cos(6*n*np.pi/180) ) # x pos at n
-        cmd.opti.subject_to(cmd.X_1[1,n]== 5*np.sin(6*n*np.pi/180) ) # y pos at n
-        cmd.opti.subject_to(cmd.X_1[2,n]== 6*n*np.pi/180 ) # rotation angle at n
+        cmd.opti.subject_to(cmd.X_1[0,n+5]== 5*np.cos(6*n*np.pi/180) ) # x pos at n
+        cmd.opti.subject_to(cmd.X_1[1,n+5]== 5*np.sin(6*n*np.pi/180) ) # y pos at n
+        cmd.opti.subject_to(cmd.X_1[2,n+5]== 6*n*np.pi/180 ) # rotation angle at n
 
 
     # Solve using ipop`t solver for nonlinear optimization problem
