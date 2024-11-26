@@ -9,6 +9,12 @@
     <fdir1>1 0 0</fdir1>
     <maxVel>10.0</maxVel>
     <minDepth>0.0005</minDepth>
+    <visual>
+      <geometry>
+        <sphere radius="${sphere_radius}"/>
+        <!--mesh filename="package://bb8/src/meshes/ball.dae" scale="1 1 1"/-->
+      </geometry>
+    </visual>
   </gazebo>
   <gazebo reference="link_left_wheel">
     <material>Gazebo/Blue</material>
@@ -22,22 +28,32 @@
       <legacyMode>true</legacyMode>
       <alwaysOn>true</alwaysOn>
       <updateRate>20</updateRate>
-      <leftJoint>joint_left_wheel</leftJoint>
-      <rightJoint>joint_right_wheel</rightJoint>
-      <wheelSeparation>${sphere_radius}</wheelSeparation>
-      <wheelDiameter>${sphere_radius*2.0}</wheelDiameter>
+      <left_joint>joint_left_wheel</left_joint>
+      <right_joint>joint_right_wheel</right_joint>
+      <wheel_separation>${sphere_radius}</wheel_separation>
+      <wheel_diameter>${sphere_radius*2.0}</wheel_diameter>
       <torque>0.1</torque>
-      <commandTopic>cmd_vel</commandTopic>
+      <command_topic>cmd_vel</command_topic>
       <odometryTopic>odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
-      <robotBaseFrame>link_chassis</robotBaseFrame>
+      <robot_base_frame>link_chassis</robot_base_frame>
+      <!--robot_base_frame>bb_8_dummy_base_direction_link</robot_base_frame-->
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin filename="libgazebo_ros_state.so" name="gazebo_ros_state">
+      <ros>
+        <namespace>/gazebo</namespace>
+      </ros>
+      <update_rate>1.0</update_rate>
     </plugin>
   </gazebo>
 
 <!-- imu -->
   <gazebo>
     <plugin name="gazebo_ros_imu_controller" filename="libgazebo_ros_imu.so">
-      <robotNamespace>/bb_8/</robotNamespace>
+      <robotNamespace>/bb8/</robotNamespace>
       <topicName>imu/data3</topicName>
       <serviceName>imu/service</serviceName>
       <bodyName>link_chassis</bodyName>
