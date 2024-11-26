@@ -11,7 +11,8 @@
     <minDepth>0.0005</minDepth>
     <visual>
       <geometry>
-        <mesh filename="package://bb8/src/meshes/ball.dae" scale="1 1 1"/>
+        <sphere radius="${sphere_radius}"/>
+        <!--mesh filename="package://bb8/src/meshes/ball.dae" scale="1 1 1"/-->
       </geometry>
     </visual>
   </gazebo>
@@ -32,10 +33,11 @@
       <wheel_separation>${sphere_radius}</wheel_separation>
       <wheel_diameter>${sphere_radius*2.0}</wheel_diameter>
       <torque>0.1</torque>
-      <commandTopic>cmd_vel</commandTopic>
+      <command_topic>cmd_vel</command_topic>
       <odometryTopic>odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
-      <robotBaseFrame>link_chassis</robotBaseFrame>
+      <robot_base_frame>link_chassis</robot_base_frame>
+      <!--robot_base_frame>bb_8_dummy_base_direction_link</robot_base_frame-->
     </plugin>
   </gazebo>
 
@@ -51,7 +53,7 @@
 <!-- imu -->
   <gazebo>
     <plugin name="gazebo_ros_imu_controller" filename="libgazebo_ros_imu.so">
-      <robotNamespace>/bb_8/</robotNamespace>
+      <robotNamespace>/bb8/</robotNamespace>
       <topicName>imu/data3</topicName>
       <serviceName>imu/service</serviceName>
       <bodyName>link_chassis</bodyName>

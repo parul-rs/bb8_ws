@@ -24,6 +24,14 @@
         <box size="${sphere_radius*2.0} ${sphere_radius*2.0} ${sphere_radius*2.0}"/>
       </geometry>
     </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0.0 ${sphere_radius}" />
+      <geometry>
+        <sphere radius="${sphere_radius}"/>
+        <!--mesh filename="package://bb8/src/meshes/ball.dae" scale="1 1 1"/-->
+      </geometry>
+      <material name="Gazebo/Orange"/>
+    </visual>
 
   </link>
 
@@ -37,6 +45,6 @@
 
   <xacro:bb_8_dummy  name="bb_8_dummy" parent="link_chassis" r="${sphere_radius}" l="${wheel_thickness}" incr="${wheel_increment}"/>
 
-  <xacro:bb_8_head  parent="link_chassis"/>
+  <xacro:bb_8_head parent="link_chassis"/>
 
 </robot>
