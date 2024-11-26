@@ -36,7 +36,7 @@ class BB8Tests(object):
         """
 
         # command delta time 1/Hz
-        dt = cmd.T/cmd.N
+        dt = cmd.T_solution/cmd.N
 
         if not rospy.is_shutdown():
             for sim_index in range(cmd.N):

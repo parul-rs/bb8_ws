@@ -23,6 +23,11 @@ cmd.opti.subject_to(cmd.X_2[0,cmd.N-1]==6.28318) # Final angular position of rol
 cmd.opti.solver('ipopt')
 sol = cmd.opti.solve()
 
+# Get optimal solutions
+cmd.X_1_solution = sol.value(cmd.X_1)
+cmd.X_2_solution = sol.value(cmd.X_2)
+cmd.T_solution = sol.value(cmd.T)
+
 # Set commands based on optimal solution
 cmd.linear_x = cmd.X_2_solution[0, :] * cmd.r
 cmd.angular_z = cmd.X_1_solution[1, :]
