@@ -1,7 +1,7 @@
 # Initial test of differential drive
 
 import casadi as cas
-# import rospy
+import rospy
 import time
 import numpy as np
 
