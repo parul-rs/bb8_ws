@@ -27,36 +27,14 @@ def generate_launch_description():
         'urdf/bb8.xacro'
     )
     robot_description_raw = xacro.process_file(xacro_file).toxml()
-    
-    # world_file = os.path.join(
-    #     get_package_share_directory('bb8'),
-    #     'worlds', 'empty.world'
-    # )
-    robot_description_raw = xacro.process_file(xacro_file).toxml()
-
-    #gazebo_env = SetEnvironmentVariable("GAZEBO_MODEL_PATH", os.path.join(get_package_prefix("robot_description"), "share"))
-    # Include Gazebo launch file
-    gazebo_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')
-        ]),
-        #launch_arguments={'world': world_file}.items()
-    )
 
     return LaunchDescription([
-        #gazebo_launch,
         Node(
             package='gazebo_ros',
             executable='spawn_entity.py',
             arguments=['-topic', '/robot_description', '-entity', 'bb8', '-x', '0', '-y', '0', '-z', '1'],
             output='screen',
         ),
-        # Node(
-        #     package='gazebo_ros',
-        #     executable='spawn_model.py',
-        #     arguments=['-topic', '/robot_description', '-entity', 'bb8', '-x', '0', '-y', '0', '-z', '1'],
-        #     output='screen',
-        # ),
         DeclareLaunchArgument(
             'use_sim_time',
             default_value='false',
@@ -68,7 +46,6 @@ def generate_launch_description():
             output='screen',
             parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_description_raw}],
             arguments=[xacro_file]),
-                # Node execution: Run the spawn_bb8 Python script
         Node(
             package='bb8',                        # Package name
             executable='test_opti_6',                # Executable name (this is the Python script)
@@ -76,11 +53,4 @@ def generate_launch_description():
             output='screen',                       # Print logs to screen
             parameters=[{'use_sim_time': False}],  # Example of passing parameters (optional)
         ),
-        # Node(
-        #     package='bb8',                        # Package name
-        #     executable='test_command',                # Executable name (this is the Python script)
-        #     name='test_command_node',                 # Node name (can be anything)
-        #     output='screen',                       # Print logs to screen
-        #     parameters=[{'use_sim_time': False}],  # Example of passing parameters (optional)
-        # ),
     ])
