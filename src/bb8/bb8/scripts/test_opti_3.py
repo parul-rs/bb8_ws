@@ -21,6 +21,9 @@ def main(args=None):
     cmd.opti.solver('ipopt')
     sol = cmd.opti.solve()
 
+    cmd.X_1_solution = sol.value(cmd.X_1)
+    cmd.T_solution = N
+
     # Set commands based on optimal solution
     cmd.linear_x = np.insert(cmd.X_1_solution[0, 0:N-1] - cmd.X_1_solution[0, 1:N], 0, 0)
     cmd.linear_y = np.insert(cmd.X_1_solution[1, 0:N-1] - cmd.X_1_solution[1, 1:N], 0, 0)

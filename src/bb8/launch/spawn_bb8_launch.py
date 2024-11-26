@@ -1,5 +1,6 @@
 import launch
 from launch import LaunchDescription
+from launch.actions import SetEnvironmentVariable
 from launch.actions import DeclareLaunchArgument, LogInfo
 from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
@@ -30,6 +31,7 @@ def generate_launch_description():
     # )
     robot_description_raw = xacro.process_file(xacro_file).toxml()
 
+    #gazebo_env = SetEnvironmentVariable("GAZEBO_MODEL_PATH", os.path.join(get_package_prefix("robot_description"), "share"))
     # Include Gazebo launch file
     gazebo_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
@@ -66,7 +68,7 @@ def generate_launch_description():
                 # Node execution: Run the spawn_bb8 Python script
         Node(
             package='bb8',                        # Package name
-            executable='test_opti_2',                # Executable name (this is the Python script)
+            executable='test_opti_3',                # Executable name (this is the Python script)
             name='test_command_node',                 # Node name (can be anything)
             output='screen',                       # Print logs to screen
             parameters=[{'use_sim_time': False}],  # Example of passing parameters (optional)
