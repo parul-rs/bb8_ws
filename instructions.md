@@ -11,7 +11,7 @@ ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 base_link base_direction
 ```
 
 
-## Test URDF in Gazebo
+## Test URDF in Gazebo through ROS
 ### Terminal 1:
 ```bash
 ros2 launch gazebo_ros gazebo.launch.py
@@ -19,4 +19,10 @@ ros2 launch gazebo_ros gazebo.launch.py
 ### Terminal 2:
 ```bash
 ros2 run gazebo_ros spawn_entity.py -entity bb8 -file /root/projects/bb8_ws/src/bb8/urdf/bb8.urdf -x 0 -y 0 -z 1
+```
+
+## Test URDF Directly through Gazebo
+### Terminal 1:
+```bash
+gazebo /root/projects/bb8_ws/src/bb8/urdf/test_bb8.urdf
 ```
