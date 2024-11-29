@@ -11,10 +11,13 @@ def main(args=None):
     rclpy.init(args=args)
 
     # Optimization
-    N = 10  #number of control intervals
+    N = 50  #number of control intervals
 
     cmd = cas_command(N)
-    cmd.opti.subject_to(cmd.X_1[0,np.floor(cmd.N / 2)]==1) # Final x position in meters
+    cmd.opti.subject_to(cmd.X_1[:,0]==[0,0,0]) # Initial condition
+    cmd.opti.subject_to(cmd.V_R[0,0]==0) # Initial condition
+    cmd.opti.subject_to(cmd.V_L[0,0]==0) # Initial condition
+    cmd.opti.subject_to(cmd.X_1[0,np.floor(cmd.N / 2)]==1) # Mid x position in meters
     cmd.opti.subject_to(cmd.X_1[0,cmd.N-1]==0.0) # Final x position in meters
 
     # Solve using ipop`t solver for nonlinear optimization problem
@@ -22,7 +25,9 @@ def main(args=None):
     sol = cmd.opti.solve()
 
     cmd.X_1_solution = sol.value(cmd.X_1)
-    cmd.T_solution = N
+    cmd.T_solution = cmd.N*cmd.dt
+    cmd.V_R_solution = sol.value(cmd.V_R)
+    cmd.V_L_solution = sol.value(cmd.V_L)
 
     # Set commands based on optimal solution
     cmd.linear_x = np.insert(cmd.X_1_solution[0, 0:N-1] - cmd.X_1_solution[0, 1:N], 0, 0)

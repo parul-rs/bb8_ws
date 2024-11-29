@@ -4,37 +4,44 @@ import rclpy
 import time
 import numpy as np
 
-from bb8.scripts.test_command import BB8Tests
-from bb8.scripts.test_diffdrive_init import cas_command 
+# from test_command import BB8Tests
+from test_diffdrive_init import cas_command 
 
 def main(args=None):
     rclpy.init(args=args)
 
     # Optimization
-    N = 65  #number of control intervals
+    N = 50  #number of control intervals
 
     cmd = cas_command(N)
-    # X_1[0] = x pos
-    # X_1[1] = y pos
-    # X_1[2] = rotation angle
+    # X_1[0,:] = x pos
+    # X_1[1,:] = y pos
+    # X_1[2,:] = rotation angle
     
     # Instructing BB8 to go to edge of circle first
-    cmd.opti.subject_to(cmd.X_1[0,4]== 20 )
-    cmd.opti.subject_to(cmd.X_1[1,4]== 0 )
-    cmd.opti.subject_to(cmd.X_1[2,4]== 0 )
+    cmd.opti.subject_to(cmd.X_1[0,0] == 0) # Initial x Condition
+    cmd.opti.subject_to(cmd.X_1[1,0] == 0) # Initial y Condition
+    cmd.opti.subject_to(cmd.X_1[2,0] == 0) # Initial theta Condition
 
-    for n in range(0,N-5):
-        cmd.opti.subject_to(cmd.X_1[0,n+5]== 20*np.cos(6*n*np.pi/180) ) # x pos at n
-        cmd.opti.subject_to(cmd.X_1[1,n+5]== 20*np.sin(6*n*np.pi/180) ) # y pos at n
-        cmd.opti.subject_to(cmd.X_1[2,n+5]== 6*n*np.pi/180 ) # rotation angle at n
+    for n in range(1,N-2,5):
+        cmd.opti.subject_to(cas.fabs(cmd.X_1[0,n]-(4*cas.cos(n/(cmd.N-2)*2*np.pi-np.pi/2))) <= 0.1) # x pos at n
+        cmd.opti.subject_to(cas.fabs(cmd.X_1[1,n]-(4*cas.sin(n/(cmd.N-2)*2*np.pi-np.pi/2)+4)) <= 0.1) # y pos at n
 
+    cmd.opti.subject_to(cas.fabs(cmd.X_1[0,cmd.N-1]) <= 0.1) # Final x Condition
+    cmd.opti.subject_to(cas.fabs(cmd.X_1[1,cmd.N-1]) <= 0.1) # Final y Condition
+    cmd.opti.subject_to(cas.fabs(cmd.X_1[2,cmd.N-1]) <= 0.1) # Final theta Condition
 
     # Solve using ipop`t solver for nonlinear optimization problem
     cmd.opti.solver('ipopt')
-    sol = cmd.opti.solve()
+    try:
+        sol = cmd.opti.solve()
+    except:
+        cmd.opti.debug.value
 
     cmd.X_1_solution = sol.value(cmd.X_1)
-    cmd.T_solution = N
+    cmd.T_solution = N*cmd.dt
+    cmd.V_R_solution = sol.value(cmd.V_R)
+    cmd.V_L_solution = sol.value(cmd.V_L)
 
     # Set commands based on optimal solution
     cmd.linear_x = np.insert(cmd.X_1_solution[0, 0:N-1] - cmd.X_1_solution[0, 1:N], 0, 0)
