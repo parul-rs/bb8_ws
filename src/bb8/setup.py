@@ -35,6 +35,7 @@ setup(
             'test_opti_2 = bb8.scripts.test_opti_2:main',
             'test_opti_3 = bb8.scripts.test_opti_3:main',
             'test_opti_5 = bb8.scripts.test_opti_5:main',
+            'test_opti_6 = bb8.scripts.test_opti_6:main',
         ],
     },
 )

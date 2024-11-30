@@ -10,6 +10,38 @@ from bb8.scripts.test_diffdrive_init import cas_command
 def main(args=None):
     rclpy.init(args=args)
 
+    points = [
+        [3,3],
+        [0,3],
+        [0,0],
+        [3,0],
+        [3,1],
+        [2,1],
+        [4,0],
+        [4,3],
+        [7,3],
+        [7,1],
+        [4,1],
+        [5,1],
+        [6,0],
+        [8,0],
+        [8,3],
+        [11,3],
+        [11,0],
+        [8,0],  
+        [12,0],
+        [12,3],
+        [15,3],
+        [15,0],
+        [12,0],
+        [17.5,0],
+        [17.5,3],
+        [16,3],
+        [19,3],
+    ]
+
+    p_array = np.array(points)
+
     # Optimization
     N = 50  #number of control intervals
 
@@ -18,18 +50,9 @@ def main(args=None):
     # X_1[1,:] = y pos
     # X_1[2,:] = rotation angle
     
-    # Instructing BB8 to go to edge of circle first
-    cmd.opti.subject_to(cmd.X_1[0,0] == 0) # Initial x Condition
-    cmd.opti.subject_to(cmd.X_1[1,0] == 0) # Initial y Condition
-    cmd.opti.subject_to(cmd.X_1[2,0] == 0) # Initial theta Condition
-
-    for n in range(1,N-2,5):
-        cmd.opti.subject_to(cas.fabs(cmd.X_1[0,n]-(4*cas.cos(n/(cmd.N-2)*2*np.pi-np.pi/2))) <= 0.1) # x pos at n
-        cmd.opti.subject_to(cas.fabs(cmd.X_1[1,n]-(4*cas.sin(n/(cmd.N-2)*2*np.pi-np.pi/2)+4)) <= 0.1) # y pos at n
-
-    cmd.opti.subject_to(cas.fabs(cmd.X_1[0,cmd.N-1]) <= 0.1) # Final x Condition
-    cmd.opti.subject_to(cas.fabs(cmd.X_1[1,cmd.N-1]) <= 0.1) # Final y Condition
-    cmd.opti.subject_to(cas.fabs(cmd.X_1[2,cmd.N-1]) <= 0.1) # Final theta Condition
+    for n in range(p_array.shape[0]):
+        cmd.opti.subject_to(cas.fabs(cmd.X_1[0,n]-p_array[n,0]) <= 0.1) # x pos at n
+        cmd.opti.subject_to(cas.fabs(cmd.X_1[1,n]-p_array[n,1]) <= 0.1) # y pos at n
 
     # Solve using ipop`t solver for nonlinear optimization problem
     cmd.opti.solver('ipopt')
