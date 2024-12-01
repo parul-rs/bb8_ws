@@ -11,6 +11,9 @@ import xacro
 import os 
 
 # README: 
+# source /opt/ros/humble/setup.bash
+# source install/setup.bash
+# source /usr/share/gazebo/setup.sh
 # Terminal 1: ros2 launch gazebo_ros gazebo.launch.py
 # Terminal 2: ros2 launch bb8 spawn_bb8_launch.py
 # Should run test_command.py
@@ -45,7 +48,7 @@ def generate_launch_description():
             arguments=[xacro_file]),
         Node(
             package='bb8',                        # Package name
-            executable='test_opti_3',                # Executable name (this is the Python script)
+            executable='test_opti_6',                # Executable name (this is the Python script)
             name='test_command_node',                 # Node name (can be anything)
             output='screen',                       # Print logs to screen
             parameters=[{'use_sim_time': False}],  # Example of passing parameters (optional)
