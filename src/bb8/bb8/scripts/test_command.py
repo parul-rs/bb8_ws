@@ -27,9 +27,6 @@ class BB8Tests(Node):
         :return:
         """
 
-        # command delta time 1/Hz
-        dt = cmd.T_solution/cmd.N
-
         for sim_index in range(cmd.N):
             print(sim_index)
             if not rclpy.ok():
@@ -42,7 +39,7 @@ class BB8Tests(Node):
             cmd_vel_msg.angular.y = float(cmd.angular_y[sim_index])
             cmd_vel_msg.angular.z = float(cmd.angular_z[sim_index])
             self.publisher.publish(cmd_vel_msg)
-            time.sleep(dt)
+            time.sleep(cmd.dt)
 
 def main(args=None):
     rclpy.init(args=args)
@@ -50,7 +47,7 @@ def main(args=None):
     bb8_tests_obj = BB8Tests()
     
     class CmdStraight:
-        T_solution = 5  # Time to move straight
+        dt = 0.1  # Time step
         N = 50  # Number of commands
         linear_x = [0.5] * N  # Move forward with 0.5 m/s
         linear_y = [0.0] * N
@@ -60,7 +57,7 @@ def main(args=None):
         angular_z = [0.0] * N  # No rotation
     
     class CmdTurn90:
-        T_solution = 2  # Total duration of the turn in seconds
+        dt = 0.1  # Time step
         N = 20  # Number of commands (2 seconds at 10 Hz)
         linear_x = [0.0] * N  # No forward motion during the turn
         linear_y = [0.0] * N

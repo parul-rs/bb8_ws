@@ -67,9 +67,11 @@ def main(args=None):
     cmd.V_L_solution = sol.value(cmd.V_L)
 
     # Set commands based on optimal solution
-    cmd.linear_x = np.insert(cmd.X_1_solution[0, 0:N-1] - cmd.X_1_solution[0, 1:N], 0, 0)
-    cmd.linear_y = np.insert(cmd.X_1_solution[1, 0:N-1] - cmd.X_1_solution[1, 1:N], 0, 0)
-    cmd.angular_z = np.insert(cmd.X_1_solution[2, 0:N-1] - cmd.X_1_solution[2, 1:N], 0, 0)
+    cf_x_lin_vel = np.array((cmd.X_1_solution[0, 0:cmd.N-1] - cmd.X_1_solution[0, 1:N])/cmd.dt)
+    cf_y_lin_vel = np.array((cmd.X_1_solution[1, 0:cmd.N-1] - cmd.X_1_solution[1, 1:N])/cmd.dt)
+    cmd.linear_x = cf_x_lin_vel*np.cos(cmd.X_1_solution[2, 0:cmd.N-1]) - cf_y_lin_vel*np.sin(cmd.X_1_solution[2, 0:cmd.N-1])
+    cmd.linear_y = cf_x_lin_vel*np.sin(cmd.X_1_solution[2, 0:cmd.N-1]) + cf_y_lin_vel*np.cos(cmd.X_1_solution[2, 0:cmd.N-1])
+    cmd.angular_z = np.array((cmd.X_1_solution[2, 0:cmd.N-1] - cmd.X_1_solution[2, 1:N])/cmd.dt)
 
     # Initialize commands
     bb8_tests_obj = BB8Tests()
