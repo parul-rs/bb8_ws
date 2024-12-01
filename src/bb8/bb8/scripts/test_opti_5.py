@@ -4,7 +4,7 @@ import rclpy
 import time
 import numpy as np
 
-# from test_command import BB8Tests
+from bb8.scripts.test_command import BB8Tests
 from bb8.scripts.test_diffdrive_init import cas_command 
 
 def main(args=None):
