@@ -36,12 +36,8 @@ class cas_command:
         self.V_R = self.opti.variable(1,N) # control trajectory - Right Speed
         self.V_L = self.opti.variable(1,N) # control trajectory - Left Speed
 
-        self.opti.minimize(cas.sumsqr(self.V_R[0,:]) + cas.sumsqr(self.V_L[0,:])) # reach the goal using least motor command
-        self.opti.subject_to(self.V_R[0,:]<=100) # Enforce control limit (rad/s)
-        self.opti.subject_to(self.V_L[0,:]<=100) # Enforce control limit (rad/s)
-        self.opti.subject_to(self.V_R[0,:]>=-100) # Enforce control limit (rad/s)
-        self.opti.subject_to(self.V_L[0,:]>=-100) # Enforce control limit (rad/s)
-            
+        self.opti.minimize(cas.sumsqr(self.V_R[:]) + cas.sumsqr(self.V_L[:])) # reach the goal using least motor command
+  
         self.ode_function_1 = cas.Function('ode_function', [self.x_1, self.v_r, self.v_l], [self.ode_1])
 
         self.dt = 0.2

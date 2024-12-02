@@ -21,7 +21,8 @@ def main(args=None):
     cmd.opti.subject_to(cmd.X_1[0,cmd.N-1]==0.0) # Final x position in meters
 
     # Solve using ipop`t solver for nonlinear optimization problem
-    cmd.opti.solver('ipopt')
+    cmd.opti.solver('ipopt',{"expand":True}, {"max_iter":100000})
+   
     sol = cmd.opti.solve()
 
     cmd.X_1_solution = sol.value(cmd.X_1)
@@ -29,11 +30,8 @@ def main(args=None):
     cmd.V_L_solution = sol.value(cmd.V_L)
 
     # Set commands based on optimal solution
-    cf_x_lin_vel = np.array((cmd.X_1_solution[0, 0:cmd.N-1] - cmd.X_1_solution[0, 1:N])/cmd.dt)
-    cf_y_lin_vel = np.array((cmd.X_1_solution[1, 0:cmd.N-1] - cmd.X_1_solution[1, 1:N])/cmd.dt)
-    cmd.linear_x = cf_x_lin_vel*np.cos(cmd.X_1_solution[2, 0:cmd.N-1]) - cf_y_lin_vel*np.sin(cmd.X_1_solution[2, 0:cmd.N-1])
-    cmd.linear_y = cf_x_lin_vel*np.sin(cmd.X_1_solution[2, 0:cmd.N-1]) + cf_y_lin_vel*np.cos(cmd.X_1_solution[2, 0:cmd.N-1])
-    cmd.angular_z = np.array((cmd.X_1_solution[2, 0:cmd.N-1] - cmd.X_1_solution[2, 1:N])/cmd.dt)
+    cmd.linear_x = (cmd.V_R_solution + cmd.V_L_solution) * cmd.r / 2
+    cmd.angular_z = (cmd.V_R_solution - cmd.V_L_solution) * cmd.r / cmd.L 
 
     # Initialize commands
     bb8_tests_obj = BB8Tests()
