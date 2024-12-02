@@ -21,11 +21,12 @@
     <!-- body -->
     <collision name="collision_chassis">
       <geometry>
-        <box size="${sphere_radius*2.0} ${sphere_radius*2.0} ${sphere_radius*2.0}"/>
+        <box size="${sphere_radius} ${sphere_radius} ${sphere_radius}"/>
       </geometry>
     </collision>
     <visual>
-      <origin rpy="0 0 0" xyz="0 0.0 ${sphere_radius}" />
+      <!--origin rpy="0 0 0" xyz="0 0.0 ${sphere_radius}" /-->
+      <origin rpy="0 0 0" xyz="0 0.0 -${sphere_radius}" />
       <geometry>
         <!--sphere radius="${sphere_radius}"/-->
         <mesh filename="package://bb8/meshes/ball.dae" scale="1 1 1"/>
@@ -36,12 +37,12 @@
   </link>
 
 
-  <xacro:link_wheel name="link_right_wheel" r="${sphere_radius}" l="${wheel_thickness}" incr="${wheel_increment}"/>
+  <xacro:link_wheel name="link_right_wheel" r="${sphere_radius+.2}" l="${wheel_thickness}" incr="${wheel_increment}"/>
 
-  <xacro:joint_wheel name="joint_right_wheel" child="link_right_wheel" origin_xyz="0 ${sphere_radius/2} 0" />
+  <xacro:joint_wheel name="joint_right_wheel" child="link_right_wheel" origin_xyz="0 ${sphere_radius} 0" />
 
-  <xacro:link_wheel name="link_left_wheel" r="${sphere_radius}" l="${wheel_thickness}" incr="${wheel_increment}"/>
-  <xacro:joint_wheel name="joint_left_wheel" child="link_left_wheel" origin_xyz="0 ${-1*sphere_radius/2} 0" />
+  <xacro:link_wheel name="link_left_wheel" r="${sphere_radius+.2}" l="${wheel_thickness}" incr="${wheel_increment}"/>
+  <xacro:joint_wheel name="joint_left_wheel" child="link_left_wheel" origin_xyz="0 ${-1*sphere_radius} 0" />
 
   <xacro:bb_8_dummy  name="bb_8_dummy" parent="link_chassis" r="${sphere_radius}" l="${wheel_thickness}" incr="${wheel_increment}"/>
 

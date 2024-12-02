@@ -100,11 +100,11 @@ def generate_launch_description():
         #     output='screen',                     # Print logs to screen
         #     parameters=[{'use_sim_time': False}], # Example of passing parameters (optional)
         # ),
-        Node(
-            package='bb8',                        # Package name
-            executable='test_opti_5',                # Executable name (this is the Python script)
-            name='test_command_node',                 # Node name (can be anything)
-            output='screen',                       # Print logs to screen
-            parameters=[{'use_sim_time': False}],  # Example of passing parameters (optional)
-        ),
+        # Node(
+        #     package='bb8',                        # Package name
+        #     executable='test_opti_3',                # Executable name (this is the Python script)
+        #     name='test_command_node',                 # Node name (can be anything)
+        #     output='screen',                       # Print logs to screen
+        #     parameters=[{'use_sim_time': False}],  # Example of passing parameters (optional)
+        # ),
     ])
