@@ -17,18 +17,16 @@ import os
 # source install/setup.bash
 # source /usr/share/gazebo/setup.sh
 # Terminal 1: ros2 launch gazebo_ros gazebo.launch.py
-# Terminal 2: ros2 launch bb8 spawn_bb8_launch.py
-# Should run test_command.py
+# Terminal 2: ros2 launch bb8 spawn_bb8_test_launch.py
+
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 
 def generate_launch_description():
-    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
-    # Define the path to the xacro file
-    xacro_file = os.path.join(
-        get_package_share_directory('bb8'),
-        'urdf/bb8.xacro'
-    )
-    robot_description_raw = xacro.process_file(xacro_file).toxml()
+    urdf_file = 'bb8_compiled.urdf'
+    package_description = "bb8"
+    robot_desc_path = os.path.join(get_package_share_directory(package_description), "urdf", urdf_file)
 
     # COPIED FROM START WORLD LAUNCHFILE ----------------------------------------------
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
@@ -63,48 +61,28 @@ def generate_launch_description():
         )
     )
 
-    # world_file = os.path.join(pkg_box_bot_gazebo, 'worlds', 'wiggly_world.world')
-
     return LaunchDescription([
-        # DeclareLaunchArgument(
-        #     'world',
-        #     default_value=[world_file, ''],
-        #     description='SDF world file'
-        # ),
         DeclareLaunchArgument(
           'world',
-          default_value=[os.path.join(pkg_box_bot_gazebo, 'worlds', 'custom_world.world'), ''],
+          default_value=[os.path.join(pkg_box_bot_gazebo, 'worlds', 'bb8_empty.world'), ''],
           description='SDF world file'),
         gazebo,
+        DeclareLaunchArgument(
+          'world',
+          default_value=[os.path.join(pkg_box_bot_gazebo, 'worlds', 'bb8_empty.world'), ''],
+          description='SDF world file'),
         Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
-            name='robot_state_publisher_1',
+            name='robot_state_publisher',
             output='screen',
-            parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_description_raw}],
-            arguments=[xacro_file]),
+            # parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_description_raw}],
+            parameters=[{'use_sim_time': True, 'robot_description': Command(['xacro ', robot_desc_path])}],
+            ),
         Node(
             package='gazebo_ros',
             executable='spawn_entity.py',
             arguments=['-topic', '/robot_description', '-entity', 'bb8', '-x', '0', '-y', '0', '-z', '1'],
-            output='screen',
-        ),
-        # DeclareLaunchArgument(
-        #     'use_sim_time',
-        #     default_value='false',
-        #     description='Use simulation (Gazebo) clock if true'),
-        # Node(
-        #     package='bb8',                        # Package name
-        #     executable='wiggle_world',         # Executable name (this is the Python script)
-        #     name='world_wiggler',             # Node name (can be anything)
-        #     output='screen',                     # Print logs to screen
-        #     parameters=[{'use_sim_time': False}], # Example of passing parameters (optional)
-        # ),
-        # Node(
-        #     package='bb8',                        # Package name
-        #     executable='test_opti_3',                # Executable name (this is the Python script)
-        #     name='test_command_node',                 # Node name (can be anything)
-        #     output='screen',                       # Print logs to screen
-        #     parameters=[{'use_sim_time': False}],  # Example of passing parameters (optional)
-        # ),
+            output='screen'),
     ])
+

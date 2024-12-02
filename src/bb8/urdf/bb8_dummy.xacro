@@ -36,7 +36,7 @@
             <parent link="${parent}" />
             <child link="${name}_base_direction_link" />
             <axis xyz="0 1 0" />
-            <limit effort="1000.0" velocity="100.0" />
+            <limit effort="1000.0" velocity="1000.0" />
           </joint>
 
         <transmission name="direction_joint_trans">

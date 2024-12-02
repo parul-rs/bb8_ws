@@ -4,7 +4,8 @@
 
         <link name="head_link">
             <inertial>
-              <origin rpy="0 0 0" xyz="0.0 0.0 ${sphere_radius}" />
+              <!--origin rpy="0 0 0" xyz="0.0 0.0 ${sphere_radius}" /-->
+              <origin rpy="0 0 0" xyz="0.0 0.0 0.0" />
               <mass value="${head_mass}" />
               <!--sphere_inertia mass="${head_mass}" r="${head_radius}"-->
               <inertia ixx="0.01" ixy="0.0" ixz="0.0"
@@ -12,17 +13,17 @@
              izz="0.01" /> <!--replace later w calculated vals-->
             </inertial>
             <collision>
-              <origin rpy="0 0 0" xyz="0 0 ${head_radius}" />
+              <!--origin rpy="0 0 0" xyz="0 0 ${head_radius}" /-->
+              <origin rpy="0 0 0" xyz="0 0 ${sphere_radius}" />
               <geometry>
                 <sphere radius="${head_radius}"/>
               </geometry>
             </collision>
             <visual>
-              <origin rpy="0 0 3.14" xyz="0 0.0 ${2*sphere_radius}" />
+              <origin rpy="0 0 3.14" xyz="0 0.0 ${sphere_radius}" />
               <geometry>
-                <!--mesh filename="package://bb8/src/meshes/head.dae" scale="1 1 1"-->
-                <!--mesh filename="file://bb8/src/meshes/head.dae" -->
-                <sphere radius="${head_radius}"/>
+                <mesh filename="package://bb8/meshes/head.dae" scale="1 1 1"/>
+                <!--sphere radius="${head_radius}"/-->
               </geometry>
             </visual>
         </link>
@@ -32,7 +33,7 @@
             <parent link="${parent}" />
             <child link="head_link" />
             <axis xyz="0 0 1" />
-            <limit effort="1.0" velocity="1.0" lower="-1e+16" upper="1e+16"/>
+            <limit effort="1000.0" velocity="1000.0" lower="-1e+16" upper="1e+16"/>
           </joint>
 
         <transmission name="head_joint_trans">
