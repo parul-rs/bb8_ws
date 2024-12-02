@@ -14,13 +14,15 @@
             </inertial>
             <collision>
               <!--origin rpy="0 0 0" xyz="0 0 ${head_radius}" /-->
-              <origin rpy="0 0 0" xyz="0 0 ${sphere_radius}" />
+              <!--origin rpy="0 0 0" xyz="0 0 ${sphere_radius}" /-->
+              <origin rpy="0 0 0" xyz="0 0 0" />
               <geometry>
                 <sphere radius="${head_radius}"/>
               </geometry>
             </collision>
             <visual>
-              <origin rpy="0 0 3.14" xyz="0 0.0 ${sphere_radius}" />
+              <!--origin rpy="0 0 3.14" xyz="0 0.0 ${sphere_radius}" /-->
+              <origin rpy="0 0 3.14" xyz="0 0.0 -${sphere_radius}" />
               <geometry>
                 <mesh filename="package://bb8/meshes/head.dae" scale="1 1 1"/>
                 <!--sphere radius="${head_radius}"/-->

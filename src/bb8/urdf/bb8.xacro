@@ -25,7 +25,8 @@
       </geometry>
     </collision>
     <visual>
-      <origin rpy="0 0 0" xyz="0 0.0 ${sphere_radius}" />
+      <!--origin rpy="0 0 0" xyz="0 0.0 ${sphere_radius}" /-->
+      <origin rpy="0 0 0" xyz="0 0.0 ${-1*sphere_radius}" />
       <geometry>
         <!--sphere radius="${sphere_radius}"/-->
         <mesh filename="package://bb8/meshes/ball.dae" scale="1 1 1"/>
