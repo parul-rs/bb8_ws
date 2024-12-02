@@ -11,7 +11,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     # Optimization
-    N = 50  #number of control intervals
+    N = 200  #number of control intervals
 
     cmd = cas_command(N)
     # X_1[0,:] = x pos
@@ -41,8 +41,8 @@ def main(args=None):
     cmd.V_L_solution = sol.value(cmd.V_L)
 
     # Set commands based on optimal solution
-    cmd.linear_x = (cmd.V_R_solution + cmd.V_L_solution) * cmd.r / 2
-    cmd.angular_z = (cmd.V_R_solution - cmd.V_L_solution) * cmd.r / cmd.L 
+    cmd.linear_x = (cmd.V_R_solution + cmd.V_L_solution) * cmd.r / 2 
+    cmd.angular_z = (cmd.V_R_solution - cmd.V_L_solution) * cmd.r / cmd.L / 2
 
     # Initialize commands
     bb8_tests_obj = BB8Tests()
