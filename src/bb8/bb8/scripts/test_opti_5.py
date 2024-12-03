@@ -12,8 +12,8 @@ def main(args=None):
 
     # Optimization
     N = 200  #number of control intervals
-
-    cmd = cas_command(N)
+    dt = 0.2
+    cmd = cas_command(N,dt)
     # X_1[0,:] = x pos
     # X_1[1,:] = y pos
     # X_1[2,:] = rotation angle

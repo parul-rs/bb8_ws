@@ -2,7 +2,7 @@ import casadi as cas
 
 class cas_command:
 
-    def __init__(self, N):
+    def __init__(self, N, dt):
         # For reference, from journal paper: 'The total diameter of the robot is 18 centimetres'. This does not seem to match the dimensions in the thesis.
         # NOTE: NEED TO UPDATE VALUES ON XACRO FILE TO MATCH THESIS VALUES!!
 
@@ -40,7 +40,7 @@ class cas_command:
   
         self.ode_function_1 = cas.Function('ode_function', [self.x_1, self.v_r, self.v_l], [self.ode_1])
 
-        self.dt = 0.2
+        self.dt = dt
 
         for i in range(N-1):
             # Foward Euler Method

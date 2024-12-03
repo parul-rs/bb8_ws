@@ -19,7 +19,7 @@ def main(args=None):
         [0,0],
         [3,0],
         [3,1],
-        [2,1],
+        [1,0.5],
         [4,0],
         [4,3],
         [7,3],
@@ -46,9 +46,9 @@ def main(args=None):
     p_array = np.array(points)
 
     # Optimization
-    N = 180  #number of control intervals
-
-    cmd = cas_command(N)
+    N = 30*3*5  #number of control intervals
+    dt = 0.5
+    cmd = cas_command(N,dt)
     # X_1[0,:] = x pos
     # X_1[1,:] = y pos
     # X_1[2,:] = rotation angle
@@ -58,10 +58,10 @@ def main(args=None):
     cmd.opti.subject_to(cmd.V_R[0] == 0) # Initial V_R Condition
     cmd.opti.subject_to(cmd.V_L[0] == 0) # Initial V_L Condition
 
-    # Define new xy position every 6 steps
+    # Define new xy position every 15 steps
     for n in range(p_array.shape[0]):
-        cmd.opti.subject_to(cas.fabs(cmd.X_1[0,n*6]-p_array[n,0]) <= 0.1) # x pos at n
-        cmd.opti.subject_to(cas.fabs(cmd.X_1[1,n*6]-p_array[n,1]) <= 0.1) # y pos at n
+        cmd.opti.subject_to(cas.fabs(cmd.X_1[0,n*3*5]-p_array[n,0]) <= 0.1) # x pos at n
+        cmd.opti.subject_to(cas.fabs(cmd.X_1[1,n*3*5]-p_array[n,1]) <= 0.1) # y pos at n
 
     # Solve using ipop`t solver for nonlinear optimization problem
     cmd.opti.solver('ipopt',{"expand":True}, {"max_iter":100000})
