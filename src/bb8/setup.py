@@ -36,6 +36,7 @@ setup(
             'test_opti_3 = bb8.scripts.test_opti_3:main',
             'test_opti_5 = bb8.scripts.test_opti_5:main',
             'test_opti_6 = bb8.scripts.test_opti_6:main',
+            'test_opti_7 = bb8.scripts.test_opti_7:main',
             'wiggle_world = bb8.scripts.wiggle_world:main',
         ],
     },
