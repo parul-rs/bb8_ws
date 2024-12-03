@@ -11,6 +11,10 @@ def main(args=None):
     rclpy.init(args=args)
 
     points = [
+        [0,0],
+        [0,0],
+        [0,0],
+        [0,0],
         [3,3],
         [0,3],
         [0,0],
@@ -43,16 +47,21 @@ def main(args=None):
     p_array = np.array(points)
 
     # Optimization
-    N = 50  #number of control intervals
+    N = 180  #number of control intervals
 
     cmd = cas_command(N)
     # X_1[0,:] = x pos
     # X_1[1,:] = y pos
     # X_1[2,:] = rotation angle
-    
+    cmd.opti.subject_to(cmd.X_1[0,0] == 0) # Initial x Condition
+    cmd.opti.subject_to(cmd.X_1[1,0] == 0) # Initial y Condition
+    cmd.opti.subject_to(cmd.X_1[2,0] == 0) # Initial theta Condition
+    cmd.opti.subject_to(cmd.V_R[0] == 0) # Initial V_R Condition
+    cmd.opti.subject_to(cmd.V_L[0] == 0) # Initial V_L Condition
+
     for n in range(p_array.shape[0]):
-        cmd.opti.subject_to(cas.fabs(cmd.X_1[0,n]-p_array[n,0]) <= 0.1) # x pos at n
-        cmd.opti.subject_to(cas.fabs(cmd.X_1[1,n]-p_array[n,1]) <= 0.1) # y pos at n
+        cmd.opti.subject_to(cas.fabs(cmd.X_1[0,n*3]-p_array[n,0]) <= 0.1) # x pos at n
+        cmd.opti.subject_to(cas.fabs(cmd.X_1[1,n*3]-p_array[n,1]) <= 0.1) # y pos at n
 
     # Solve using ipop`t solver for nonlinear optimization problem
     cmd.opti.solver('ipopt',{"expand":True}, {"max_iter":100000})
