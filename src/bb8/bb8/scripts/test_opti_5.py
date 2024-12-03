@@ -22,8 +22,15 @@ def main(args=None):
     cmd.opti.subject_to(cmd.X_1[0,0] == 0) # Initial x Condition
     cmd.opti.subject_to(cmd.X_1[1,0] == 0) # Initial y Condition
     cmd.opti.subject_to(cmd.X_1[2,0] == 0) # Initial theta Condition
+    cmd.opti.subject_to(cmd.V_R[0] == 0) # Initial V_R Condition
+    cmd.opti.subject_to(cmd.V_L[0] == 0) # Initial V_L Condition
 
-    for n in range(1,N-2,5):
+    # restrict vehicle angular velocity change per control step
+    for i in range(N-1):
+        cmd.opti.subject_to(cas.fabs((cmd.V_R[i+1]-cmd.V_L[i+1]) * cmd.r / cmd.L - (cmd.V_R[i]-cmd.V_L[i]) * cmd.r / cmd.L) <= 0.5)
+
+    # define xy points for circle
+    for n in range(5,N-2,5):
         cmd.opti.subject_to(cas.fabs(cmd.X_1[0,n]-(4*cas.cos(n/(cmd.N-2)*2*np.pi-np.pi/2))) <= 0.1) # x pos at n
         cmd.opti.subject_to(cas.fabs(cmd.X_1[1,n]-(4*cas.sin(n/(cmd.N-2)*2*np.pi-np.pi/2)+4)) <= 0.1) # y pos at n
 
