@@ -16,8 +16,7 @@ import os
 # source /opt/ros/humble/setup.bash
 # source install/setup.bash
 # source /usr/share/gazebo/setup.sh
-# Terminal 1: ros2 launch gazebo_ros gazebo.launch.py
-# Terminal 2: ros2 launch bb8 spawn_bb8_launch.py
+# Terminal 1: ros2 launch bb8 spawn_bb8_launch.py world:=src/bb8/worlds/redcube_world.world
 # Should run test_command.py
 
 def generate_launch_description():
@@ -53,6 +52,21 @@ def generate_launch_description():
     else:
         os.environ['GAZEBO_PLUGIN_PATH'] = install_dir + '/lib'
 
+    # Get the install directory of your package
+    install_dir = get_package_prefix('bb8')
+
+    # Get the path to your world files
+    gazebo_worlds_path = os.path.join(pkg_box_bot_gazebo, 'worlds')
+
+    # Add to GAZEBO_WORLD_PATH if not already set
+    if 'GAZEBO_WORLD_PATH' in os.environ:
+        os.environ['GAZEBO_WORLD_PATH'] = os.environ['GAZEBO_WORLD_PATH'] + ':' + install_dir + '/share' + ':' + gazebo_worlds_path
+    else:
+        os.environ['GAZEBO_WORLD_PATH'] = install_dir + '/share' + ':' + gazebo_worlds_path
+
+    # Print the new GAZEBO_WORLD_PATH for debugging
+    print("GAZEBO WORLD PATH==" + str(os.environ["GAZEBO_WORLD_PATH"]))
+
     print("GAZEBO MODELS PATH=="+str(os.environ["GAZEBO_MODEL_PATH"]))
     print("GAZEBO PLUGINS PATH=="+str(os.environ["GAZEBO_PLUGIN_PATH"]))
 
@@ -73,7 +87,7 @@ def generate_launch_description():
         # ),
         DeclareLaunchArgument(
           'world',
-          default_value=[os.path.join(pkg_box_bot_gazebo, 'worlds', 'custom_world.world'), ''],
+          default_value=[os.path.join(pkg_box_bot_gazebo, 'worlds', 'redcube_world.world'), ''],
           description='SDF world file'),
         gazebo,
         Node(

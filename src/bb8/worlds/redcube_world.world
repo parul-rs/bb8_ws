@@ -1,0 +1,34 @@
+<sdf version="1.6">
+  <world name="default">
+
+    <!-- Include sun and ground plane -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- Set up the camera for top-down view -->
+    <gui>
+      <camera name="user_camera">
+        <!-- Top-down view pose: x=0, y=0, z=10; roll=0, pitch=-90 degrees (in radians), yaw=0 -->
+        <pose>0 0 25 0 1.57 1.57</pose>
+      </camera>
+    </gui>
+
+    <light name="overhead_light" type="directional">
+      <pose>0 0 75 0 -0.03 0</pose> <!-- Position light at (0, 0, 100) with a downward direction -->
+      <diffuse>1.0 1.0 1.0 1.0</diffuse> <!-- White light -->
+      <specular>2.0 2.0 2.0 1.0</specular> <!-- White light for specular reflection -->
+      <attenuation>
+        <range>1000</range> <!-- Light range -->
+        <constant>0.9</constant> <!-- Constant attenuation -->
+        <linear>0.1</linear> <!-- Linear attenuation -->
+        <quadratic>0.01</quadratic> <!-- Quadratic attenuation -->
+      </attenuation>
+      <cast_shadows>true</cast_shadows> <!-- Enable shadows -->
+    </light>
+
+  </world>
+</sdf>

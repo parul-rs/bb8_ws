@@ -16,6 +16,7 @@ setup(
         (os.path.join('share', package_name, 'urdf'), glob('urdf/*')),
         (os.path.join('share', package_name, 'urdf2'), glob('urdf2/*')),
         (os.path.join('share', package_name, 'meshes'), glob('meshes/*')),
+        (os.path.join('share', package_name, 'world'), glob('worlds/*')),
     ],
     install_requires=['setuptools', 'rclpy'],
     zip_safe=True,
