@@ -24,6 +24,7 @@ def main(args=None):
     cmd.X_1_solution = sol.value(cmd.X_1)
     cmd.X_2_solution = sol.value(cmd.X_2)
     cmd.T_solution = sol.value(cmd.T)
+    cmd.dt = cmd.T_solution / cmd.N
 
     # Set commands based on optimal solution
     cmd.linear_x = cmd.X_2_solution[0, :] * cmd.r
