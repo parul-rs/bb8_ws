@@ -79,7 +79,7 @@ def generate_launch_description():
         Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
-            name='robot_state_publisher_1',
+            name='robot_state_publisher',
             output='screen',
             parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_description_raw}],
             arguments=[xacro_file]),
@@ -102,7 +102,7 @@ def generate_launch_description():
         # ),
         Node(
             package='bb8',                        # Package name
-            executable='test_opti_5',                # Executable name (this is the Python script)
+            executable='test_opti_7',                # Executable name (this is the Python script)
             name='test_command_node',                 # Node name (can be anything)
             output='screen',                       # Print logs to screen
             parameters=[{'use_sim_time': False}],  # Example of passing parameters (optional)

@@ -11,7 +11,7 @@ class cas_command:
         # ---------------------------------------------------------
         # Spherical robot's properties
         self.r = 0.35 # radius of wheel in meters
-        self.L = 0.70 # distance between wheels in meters
+        self.L = 0.35 # distance between wheels in meters
         
         # -------------------------------------------------------------------------------------------
         # Defining EOM
