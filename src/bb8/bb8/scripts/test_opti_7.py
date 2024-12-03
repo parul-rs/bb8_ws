@@ -1,4 +1,4 @@
-# Groot test of differential drive
+# Square test of differential drive
 import casadi as cas
 import rclpy
 import time
@@ -13,40 +13,20 @@ def main(args=None):
     points = [
         [0,0],
         [0,0],
-        [0,0],
-        [3,3],
-        [0,3],
-        [0,0],
-        [3,0],
-        [3,1],
+        [1,0],
+        [2,0],
         [2,1],
-        [4,0],
-        [4,3],
-        [7,3],
-        [7,1],
-        [4,1],
-        [5,1],
-        [6,0],
-        [8,0],
-        [8,3],
-        [11,3],
-        [11,0],
-        [8,0],  
-        [12,0],
-        [12,3],
-        [15,3],
-        [15,0],
-        [12,0],
-        [17.5,0],
-        [17.5,3],
-        [16,3],
-        [19,3],
+        [2,2],
+        [1,2],
+        [0,2],
+        [0,1],
+        [0,0],
     ]
 
     p_array = np.array(points)
 
     # Optimization
-    N = 180  #number of control intervals
+    N = 165 #number of control intervals
 
     cmd = cas_command(N)
     # X_1[0,:] = x pos
@@ -58,10 +38,10 @@ def main(args=None):
     cmd.opti.subject_to(cmd.V_R[0] == 0) # Initial V_R Condition
     cmd.opti.subject_to(cmd.V_L[0] == 0) # Initial V_L Condition
 
-    # Define new xy position every 6 steps
+    # Define new xy position every 15 steps
     for n in range(p_array.shape[0]):
-        cmd.opti.subject_to(cas.fabs(cmd.X_1[0,n*6]-p_array[n,0]) <= 0.1) # x pos at n
-        cmd.opti.subject_to(cas.fabs(cmd.X_1[1,n*6]-p_array[n,1]) <= 0.1) # y pos at n
+        cmd.opti.subject_to(cas.fabs(cmd.X_1[0,n*15]-p_array[n,0]) <= 0.05) # x pos at n
+        cmd.opti.subject_to(cas.fabs(cmd.X_1[1,n*15]-p_array[n,1]) <= 0.05) # y pos at n
 
     # Solve using ipop`t solver for nonlinear optimization problem
     cmd.opti.solver('ipopt',{"expand":True}, {"max_iter":100000})

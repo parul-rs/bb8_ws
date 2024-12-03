@@ -1,4 +1,4 @@
-# Initial test of differential drive
+# Initial test of differential drive (circle)
 import casadi as cas
 import rclpy
 import time
