@@ -22,7 +22,7 @@ def main(args=None):
 
     # Optimization
     N = (5+1)*3*5  #number of control intervals
-    dt = 0.5
+    dt = 0.2
     cmd = cas_command(N,dt)
     # X_1[0,:] = x pos
     # X_1[1,:] = y pos
