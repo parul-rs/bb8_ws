@@ -107,17 +107,17 @@ def generate_launch_description():
         #     'use_sim_time',
         #     default_value='false',
         #     description='Use simulation (Gazebo) clock if true'),
-        # Node(
-        #     package='bb8',                        # Package name
-        #     executable='wiggle_world',         # Executable name (this is the Python script)
-        #     name='world_wiggler',             # Node name (can be anything)
-        #     output='screen',                     # Print logs to screen
-        #     parameters=[{'use_sim_time': False}], # Example of passing parameters (optional)
-        # ),
         Node(
             package='bb8',                        # Package name
             executable='test_opti_7',                # Executable name (this is the Python script)
             name='test_command_node',                 # Node name (can be anything)
+            output='screen',                       # Print logs to screen
+            parameters=[{'use_sim_time': False}],  # Example of passing parameters (optional)
+        ),
+        Node(
+            package='bb8',                        # Package name
+            executable='path_tracker',                # Executable name (this is the Python script)
+            name='path_tracker',                 # Node name (can be anything)
             output='screen',                       # Print logs to screen
             parameters=[{'use_sim_time': False}],  # Example of passing parameters (optional)
         ),

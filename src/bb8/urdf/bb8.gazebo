@@ -50,17 +50,21 @@
     </plugin>
   </gazebo>
 
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <robotNamespace>/bb8</robotNamespace>
+  </plugin>
+
+
 <!-- imu -->
   <gazebo>
     <plugin name="gazebo_ros_imu_controller" filename="libgazebo_ros_imu.so">
-      <robotNamespace>/bb8/</robotNamespace>
-      <topicName>imu/data3</topicName>
-      <serviceName>imu/service</serviceName>
+      <topic_name>imu/data3</topic_name>
+      <service_name>imu/service</service_name>
       <bodyName>link_chassis</bodyName>
       <gaussianNoise>0</gaussianNoise>
       <rpyOffsets>0 0 0</rpyOffsets>
       <updateRate>50.0</updateRate>
-      <alwaysOn>true</alwaysOn>
+      <always_on>true</always_on>
       <gaussianNoise>0</gaussianNoise>
     </plugin>
   </gazebo>

@@ -21,7 +21,7 @@ def main(args=None):
     p_array = np.array(points)
 
     # Optimization
-    N = (5+1)*3*5  #number of control intervals
+    N = (5+1)*3*5*2  #number of control intervals
     dt = 0.2
     cmd = cas_command(N,dt)
     # X_1[0,:] = x pos
@@ -35,8 +35,8 @@ def main(args=None):
 
     # Define new xy position every 15 steps
     for n in range(p_array.shape[0]):
-        cmd.opti.subject_to(cas.fabs(cmd.X_1[0,n*3*5]-p_array[n,0]) <= 0.1) # x pos at n
-        cmd.opti.subject_to(cas.fabs(cmd.X_1[1,n*3*5]-p_array[n,1]) <= 0.1) # y pos at n
+        cmd.opti.subject_to(cas.fabs(cmd.X_1[0,n*3*5*2]-p_array[n,0]) <= 0.1) # x pos at n
+        cmd.opti.subject_to(cas.fabs(cmd.X_1[1,n*3*5*2]-p_array[n,1]) <= 0.1) # y pos at n
 
     # Solve using ipop`t solver for nonlinear optimization problem
     cmd.opti.solver('ipopt',{"expand":True}, {"max_iter":100000})
