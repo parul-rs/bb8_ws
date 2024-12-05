@@ -5,6 +5,16 @@ from visualization_msgs.msg import Marker
 from gazebo_msgs.srv import SpawnEntity
 import math
 
+# This was intended to be a live bb8 path visualizer
+# It runs but doesn't quite do what it's supposed to
+# To use, add the following to the return LaunchDescription part of the launchfile:
+#         Node(
+        #     package='bb8',                     
+        #     executable='path_tracker', # Change to script name you'd like to run
+        #     name='path_tracker', 
+        #     output='screen',          
+        # ),
+
 class PathTracker(Node):
     def __init__(self):
         super().__init__('path_tracker')
@@ -49,7 +59,6 @@ class PathTracker(Node):
         # Spawn request message
         self.spawn_request = SpawnEntity.Request()
         self.spawn_request.name = "sphere"  # Correct attribute for model name
-        #self.spawn_request.xml = self.generate_sphere_model_xml()  # Model URDF
 
     def update_position(self, msg: Twist):
         current_time = self.get_clock().now()
@@ -59,9 +68,6 @@ class PathTracker(Node):
         # Extract linear and angular velocity
         v = msg.linear.x
         omega = msg.angular.z
-        
-        # Print velocities for debugging
-        print(f"Linear Velocity: {v}, Angular Velocity: {omega}")
 
         # Update position using differential drive equations
         self.x += v * math.cos(self.theta) * dt
@@ -127,13 +133,10 @@ class PathTracker(Node):
 
         # Dynamically generate the URDF with the current position
         self.spawn_request.xml = self.generate_sphere_model_xml(sphere_name, spawn_x, spawn_y)
-
-        # Call the spawn entity service
         self.spawn_client.call_async(self.spawn_request)
 
 
     def generate_sphere_model_xml(self, x, y, sphere_name):
-        # URDF for a simple sphere model with Gazebo-specific tags, dynamically adding the position
         sphere_urdf = f"""
         <robot name="{sphere_name}">
             <link name="sphere_link">

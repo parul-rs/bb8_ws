@@ -37,7 +37,6 @@
       <odometryTopic>odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
       <robot_base_frame>link_chassis</robot_base_frame>
-      <!--robot_base_frame>bb_8_dummy_base_direction_link</robot_base_frame-->
     </plugin>
   </gazebo>
 
@@ -54,8 +53,6 @@
     <robotNamespace>/bb8</robotNamespace>
   </plugin>
 
-
-<!-- imu -->
   <gazebo>
     <plugin name="gazebo_ros_imu_controller" filename="libgazebo_ros_imu.so">
       <topic_name>imu/data3</topic_name>

@@ -30,7 +30,7 @@ def main(args=None):
     # X_1[2,:] = rotation angle
     cmd.opti.subject_to(cmd.X_1[0,0] == 0) # Initial x Condition
     cmd.opti.subject_to(cmd.X_1[1,0] == 0) # Initial y Condition
-    cmd.opti.subject_to(cmd.X_1[2,0] == -0.1) # Initial theta Condition
+    cmd.opti.subject_to(cmd.X_1[2,0] == -0.3) # Initial theta Condition
     cmd.opti.subject_to(cmd.V_R[0] == 0) # Initial V_R Condition
     cmd.opti.subject_to(cmd.V_L[0] == 0) # Initial V_L Condition
 

@@ -13,22 +13,42 @@
     <gui>
       <camera name="user_camera">
         <!-- Top-down view pose: x=0, y=0, z=10; roll=0, pitch=-90 degrees (in radians), yaw=0 -->
-        <pose>0 0 5 0 1.57 1.57</pose>
+        <pose>0 0 7 0 1.57 1.57</pose>
       </camera>
     </gui>
 
     <light name="overhead_light" type="directional">
-      <pose>0 0 7 0 -0.03 0</pose> <!-- Position light at (0, 0, 100) with a downward direction -->
-      <diffuse>1.0 1.0 1.0 1.0</diffuse> <!-- White light -->
+      <pose>0 0 7 0 0 0</pose> <!-- Position light at (0, 0, 100) with a downward direction -->
+      <diffuse>0.5 0.5 0.5 0.5</diffuse> <!-- White light -->
       <specular>3.0 3.0 3.0 1.0</specular> <!-- White light for specular reflection -->
       <attenuation>
         <range>1000</range> <!-- Light range -->
-        <constant>0.9</constant> <!-- Constant attenuation -->
+        <constant>0.5</constant> <!-- Constant attenuation -->
         <linear>0.1</linear> <!-- Linear attenuation -->
         <quadratic>0.01</quadratic> <!-- Quadratic attenuation -->
       </attenuation>
+      <cast_shadows>false</cast_shadows> <!-- Enable shadows -->
+    </light>
+
+    <light name="spotlight" type="spot">
+      <pose>0 0 7 0 0 0</pose> <!-- Position the spotlight and point it downward -->
+      <diffuse>2.0 2.0 2.0 1.0</diffuse> <!-- Bright white light -->
+      <specular>0.5 0.5 0.5 1.0</specular> <!-- Slightly shiny specular reflection -->
+      <attenuation>
+        <range>100</range> <!-- Light range -->
+        <constant>0.8</constant> <!-- Constant intensity -->
+        <linear>0.1</linear> <!-- Gradual decay -->
+        <quadratic>0.01</quadratic> <!-- More realistic decay -->
+      </attenuation>
+      <direction>0 0 -1</direction> <!-- Point the light downward -->
+      <spot>
+        <inner_angle>0.5</inner_angle> <!-- Inner cone angle in radians -->
+        <outer_angle>1.0</outer_angle> <!-- Outer cone angle in radians -->
+        <falloff>0.5</falloff> <!-- Smoothness of the light's edges -->
+      </spot>
       <cast_shadows>true</cast_shadows> <!-- Enable shadows -->
     </light>
+
 
   </world>
 </sdf>
