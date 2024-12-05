@@ -12,8 +12,6 @@
                 </plugin>
               </gazebo>
 
-
-
           <link name="${name}_base_direction_link">
             <inertial>
               <mass value="0.2"/>

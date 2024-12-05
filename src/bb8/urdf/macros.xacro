@@ -46,14 +46,14 @@
                 <cylinder length="${l}" radius="${r + incr}"/>
               </geometry>
             </collision>
-            <visual name="${name}_visual">
-                <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
-                <geometry>
-                    <cylinder length="${l}" radius="${r + incr}"/>
-                </geometry>
+            <!--visual name="${name}_visual"-->
+                <!--origin rpy="0 1.5707 1.5707" xyz="0 0 0"/-->
+                <!--geometry-->
+                    <!--cylinder length="${l}" radius="${r + incr}"/-->
+                <!--/geometry-->
                 <!-- Define the material for the wheel. You can customize this -->
-                <material name="Gazebo/Blue"/> 
-            </visual>
+                <!--material name="Gazebo/Blue"/--> 
+            <!--/visual-->
         </link>
     </xacro:macro >
 

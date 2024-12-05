@@ -16,6 +16,7 @@ setup(
         (os.path.join('share', package_name, 'urdf'), glob('urdf/*')),
         (os.path.join('share', package_name, 'urdf2'), glob('urdf2/*')),
         (os.path.join('share', package_name, 'meshes'), glob('meshes/*')),
+        (os.path.join('share', package_name, 'worlds'), glob('worlds/*')),
     ],
     install_requires=['setuptools', 'rclpy'],
     zip_safe=True,
@@ -42,6 +43,7 @@ setup(
             'test_opti_O = bb8.scripts.test_opti_O:main',
             'test_opti_T = bb8.scripts.test_opti_T:main',           
             'wiggle_world = bb8.scripts.wiggle_world:main',
+            'path_tracker = bb8.scripts.path_tracker:main',
         ],
     },
 )
